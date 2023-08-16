@@ -8,7 +8,7 @@ namespace StudentService.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        List<Student> students = null;
+        static List<Student> students = null;
         public StudentController()
         {
             if (students == null)
@@ -24,7 +24,9 @@ namespace StudentService.Controllers
                 };
             }
         }
-        [HttpGet]
+        // CRUD operations
+        // R > Get (Get all records)x
+
         public List<Student> Get()
         {
             return students.ToList();
@@ -37,7 +39,38 @@ namespace StudentService.Controllers
             return students.FirstOrDefault(x => x.Id == id);
         }
 
+        [HttpPost]
+        public void Create(Student student)
+        {
+            students.Add(student);
 
+        }
+
+        [HttpDelete("{id}")]
+        public void Delete(int? id)
+        {
+            Student obj = students.FirstOrDefault(x => x.Id == id);
+            ;
+            if (obj != null)
+                students.Remove(obj);
+                
+        }
+
+        [HttpPut("{id}")]
+        public void Edit(int? id, Student student)
+        {
+            Student obj = students.FirstOrDefault(x => x.Id == id);
+             
+            if (obj != null)
+                foreach(Student temp in students)
+                {
+                    if(temp.Id== id)
+                    {
+                        temp.Batch = student.Batch;
+                    }
+                }
+                 
+        }
 
     }
 }
